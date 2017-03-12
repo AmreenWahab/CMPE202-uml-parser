@@ -1,19 +1,15 @@
 import java.io.*;
-
-
 public class ReadFile 
 {
-
 	public static void main(String[] args) 
 	{
-		// TODO Auto-generated method stub
+		
 		FileReader javaFile = null;
 		
 		if (0 < args.length) {
 	           try {
 				javaFile = new FileReader(args[0]);
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	      }
