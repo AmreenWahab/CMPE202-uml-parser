@@ -19,26 +19,24 @@ public class Test
 	SourceStringReader reader = new SourceStringReader(source);
 	FileOutputStream png = null;
 		
-	try
+	try 
 		{
 			png = new FileOutputStream(new File("E:\\img4.png"));
+			reader.generateImage(png,  new FileFormatOption(FileFormat.PNG));
 		} 
-		catch (FileNotFoundException e1) 
+		
+	catch (FileNotFoundException e1)
 		{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
-		try
-		{
-			reader.generateImage(png,  new FileFormatOption(FileFormat.PNG));
-		} 
-		catch (IOException e)
-		{
+ 
+	catch (IOException e)
+	{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
 	}
+		
+  }
 }
-
 
