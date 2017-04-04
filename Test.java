@@ -6,22 +6,39 @@ import java.io.OutputStream;
 
 import net.sourceforge.plantuml.*;
 
-public class Test {
+public class Test 
+	
+{
 
 	public static void main(String args[])
+		
 	{
 		
-		
 	 String source = "@startuml \n" + "Class A" + "\n@enduml";
-	 System.out.println(source);
+	 System.out.println(source);	
+	SourceStringReader reader = new SourceStringReader(source);
+	FileOutputStream png = null;
 		
-		SourceStringReader reader = new SourceStringReader(source);
-	
-
-		FileOutputStream png = null;
-		try {
+	try
+		{
 			png = new FileOutputStream(new File("E:\\img4.png"));
-		} catch (FileNotFoundException e1) {
+		} 
+		catch (FileNotFoundException e1) 
+		{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+		try
+		{
+			reader.generateImage(png,  new FileFormatOption(FileFormat.PNG));
+		} 
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+}
+
+
