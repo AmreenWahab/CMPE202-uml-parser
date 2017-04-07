@@ -56,7 +56,7 @@ public class JavaFileParser
 			
 		}
 		
-		public static class MethodCollector extends VoidVisitorAdapter<Void>
+	public static class MethodCollector extends VoidVisitorAdapter<Void>
 	
 	{
 		@Override
