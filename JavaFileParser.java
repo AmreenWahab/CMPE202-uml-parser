@@ -56,6 +56,38 @@ public class JavaFileParser
 			
 		}
 		
+		public static class MethodCollector extends VoidVisitorAdapter<Void>
+	
+	{
+		@Override
+		public void visit(MethodDeclaration md, Void arg)
+		
+		{
+			super.visit(md,arg);
+			
+			methodModifierList.add(md.getModifiers());
+		//	System.out.print(JavaFileParser.methodModifierList);
+			
+				
+				methodReturnTypeList.add(md.getType().toString());
+		//		System.out.print(" "+JavaFileParser.methodReturnTypeList);
+			
+				methodNameList.add(md.getName());
+		//		System.out.print(" "+JavaFileParser.methodNameList);
+			
+					if(md.getParameters()!=null)
+					{
+						methodParameterList.add(md.getParameters().toString());
+						//System.out.print(" "+JavaFileParser.methodParameterList);
+					}
+					else
+						methodParameterList.add("");
+					//System.out.print(" "+JavaFileParser.methodParameterList);
+		}
+		
+		
+	}
+		
 		
 	}
 	
