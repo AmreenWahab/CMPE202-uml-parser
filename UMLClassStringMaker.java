@@ -28,3 +28,29 @@ public class UMLClassStringMaker
 		
 	}
 	
+	public void classOrInterfaceNameString()
+	
+	{
+		if(inputString==null)
+		{
+			inputString.append("@startuml\n").append("skinparam classAttributeIconSize 0");
+			
+		}
+		
+		if(JavaFileParser.isInterface)
+		{
+			inputString.append("interface ");
+			inputString.append(JavaFileParser.interfaceNameList.get(0));
+			inputString.append(" {\n");
+			
+		}
+		
+		else
+		{
+			inputString.append("class ");
+			inputString.append(JavaFileParser.classNameList.get(0));
+			inputString.append(" {\n");
+		}
+		
+	//	attributeNameString();
+	}
