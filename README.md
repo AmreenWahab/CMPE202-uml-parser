@@ -11,8 +11,5 @@ Tasks done:
 
 Tasks left to do:
 
-1) store complete data about class
-2) method data needed to identify getter and setter methods
-3) which method should be traversed -- find out to get dependency inside methods for interfaces
-4) association - one to one and multiple associations --- how to find the difference?
-5) Sequence diagram
+1) association - one to one and multiple associations ?
+2) Sequence diagram
