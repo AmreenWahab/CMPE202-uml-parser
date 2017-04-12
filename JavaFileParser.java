@@ -91,3 +91,41 @@ public class JavaFileParser
 		
 	}
 	
+public static class FieldCollector extends VoidVisitorAdapter<Void>
+	{
+		@Override
+		public void visit(FieldDeclaration fd, Void arg)
+		
+		{
+			super.visit(fd,arg);
+			
+			fieldModifierList.add(fd.getModifiers());
+			
+			//System.out.println(fieldModifierList);
+			
+			fieldTypeList.add(fd.getType().toString());
+			//System.out.println(fieldTypeList);
+			
+			fieldNameList.add(fd.getVariables().toString());
+			
+			
+			//if(!fieldNameList.isEmpty())
+			for(String name:fieldNameList)
+			{
+				if(name.contains("="))
+				{
+					
+					String newname=name.substring(0, name.indexOf("="));
+					//System.out.println("inside -----" + fieldNameList);
+					fieldNameList.remove(name);
+					//System.out.println("after removing -----" + fieldNameList);
+					fieldNameList.add(newname);
+					//System.out.println("after adding -----" + fieldNameList);
+					
+				}
+						
+			}  
+			//System.out.println(fieldNameList);
+		}
+	}
+	
