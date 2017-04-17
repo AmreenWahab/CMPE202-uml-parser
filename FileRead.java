@@ -21,33 +21,15 @@ public class FileRead
 	static List<String> interfaceNameData = new ArrayList<>();
 	static boolean interfaceMethodsPresent = false;
 	
-	public static class ClassNamePrinter extends VoidVisitorAdapter<Void>
-	
+	public static void main(String[] args) throws IOException, ParseException 
+		
 	{
-		@Override
-		public void visit(ClassOrInterfaceDeclaration cid, Void arg)
-		{
-			super.visit(cid,arg);
-			System.out.println(cid.getName());
-		}
-		
-		
-	}
-	
-		public static void main(String[] args) throws IOException, ParseException 
-		
-		{
-			System.out.println(args[0]);
+//			System.out.println(args[0]);
 	
 			File folder = new File(args[0]);
 			File[] files = folder.listFiles();
 	
 			int nooffiles = files.length;
-			
-			
-			
-			
-		//	VoidVisitor<?> classNameVisitor = new ClassNamePrinter();
 			
 			VoidVisitor<?> classOrInterfaceVisitor = new JavaFileParser.ClassOrInterfaceCollector();	
 			VoidVisitor<?> methodVisitor = new JavaFileParser.MethodCollector();
@@ -135,9 +117,10 @@ public class FileRead
 				}
 
 			}
-			
-			
+			AssociationRelationString.drawAssociation();
 			umlDiagramGenerator.classDiagramGenerator(UMLClassStringMaker.umlInputString.toString());
+
+			
 		
 		}
 }
