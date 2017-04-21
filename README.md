@@ -11,5 +11,4 @@ Tasks done:
 
 Tasks left to do:
 
-1) association - one to one and multiple associations ?
-2) Sequence diagram
+1) Sequence diagram
