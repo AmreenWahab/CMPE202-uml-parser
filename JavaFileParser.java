@@ -1,14 +1,16 @@
 import java.util.ArrayList;
 import java.util.List;
-
 import japa.parser.ast.body.ClassOrInterfaceDeclaration;
+import japa.parser.ast.body.ConstructorDeclaration;
+import japa.parser.ast.body.FieldDeclaration;
 import japa.parser.ast.body.MethodDeclaration;
+import japa.parser.ast.expr.VariableDeclarationExpr;
 import japa.parser.ast.visitor.VoidVisitorAdapter;
 import japa.parser.ast.type.ClassOrInterfaceType;
 
 public class JavaFileParser 
 {
-	//StringBuilder plantUMLText = new StringBuilder();
+
 	static ArrayList<String> classNameList = new ArrayList<String>();
 	static ArrayList<String> interfaceNameList = new ArrayList<String>();
 	static List<ClassOrInterfaceType> extendsList = new ArrayList<>();
@@ -17,8 +19,19 @@ public class JavaFileParser
 	static List<Integer> methodModifierList = new ArrayList<>();
 	static List<String> methodReturnTypeList = new ArrayList<>();
 	static List<String> methodParameterList = new ArrayList<>();
+	static List<String> fieldNameList = new ArrayList<>();
+	static List<Integer> fieldModifierList = new ArrayList<>();
+	static List<String> fieldTypeList = new ArrayList<>();
+	static List<String> innerVariableTypeList = new ArrayList<>();
+	static List<String> constructorParameterList = new ArrayList<>();
+	static List<String> constructorNameList = new ArrayList<>();
+	static List<Integer> constructorModifierList = new ArrayList<>();
+	static List<String> methodBodyList= new ArrayList<>();
+	
 	static boolean isInterface;
 
+	
+	//collect class and interface name data
 	public static class ClassOrInterfaceCollector extends VoidVisitorAdapter<Void>
 	
 	{
@@ -26,36 +39,39 @@ public class JavaFileParser
 		public void visit(ClassOrInterfaceDeclaration cid, Void arg)
 		{
 			super.visit(cid,arg);
-		//	System.out.println(cid.getName());
+		
 			
 			if(cid.isInterface())
 			{
 				interfaceNameList.add(cid.getName());
-				isInterface = true;
-				//for(String interfaceName: JavaFileParser.interfaceNameList)
-					System.out.println("\nInterface  ----  "+cid.getName());
+				isInterface = cid.isInterface();
+			//	System.out.println("\nInterface  ----  "+cid.getName());
 			}
 			else
 			{
-				isInterface = false;
+				isInterface = cid.isInterface();
 				classNameList.add(cid.getName());
-				System.out.println("\nClass  ----  "+cid.getName());
+		//		System.out.println("\nClass  ----  "+cid.getName());
 				
 				if(cid.getExtends()!=null)
 				{
 					extendsList=cid.getExtends();
-					System.out.println("extends" + cid.getExtends());
+					//System.out.println("extends" + cid.getExtends());
 				}
 				
 				if(cid.getImplements()!=null)
 				{
 					implementsList=cid.getImplements();
-					System.out.println("implements" + cid.getImplements());
+				//	System.out.println("implements" + cid.getImplements());
 				}
 			}
 			
 		}
 		
+		
+	}
+	
+	//collect method data
 	public static class MethodCollector extends VoidVisitorAdapter<Void>
 	
 	{
@@ -74,6 +90,10 @@ public class JavaFileParser
 			
 				methodNameList.add(md.getName());
 		//		System.out.print(" "+JavaFileParser.methodNameList);
+				
+				if(!isInterface)
+				methodBodyList.add(md.getBody().toString());
+		//		System.out.print(" "+JavaFileParser.methodBodyList);
 			
 					if(md.getParameters()!=null)
 					{
@@ -87,11 +107,9 @@ public class JavaFileParser
 		
 		
 	}
-		
-		
-	}
 	
-public static class FieldCollector extends VoidVisitorAdapter<Void>
+	//get fields data
+	public static class FieldCollector extends VoidVisitorAdapter<Void>
 	{
 		@Override
 		public void visit(FieldDeclaration fd, Void arg)
@@ -129,3 +147,28 @@ public static class FieldCollector extends VoidVisitorAdapter<Void>
 		}
 	}
 	
+	//gather constructor data
+	
+	public static class ConstructorCollector extends VoidVisitorAdapter<Void>
+	{
+		@Override
+		public void visit(ConstructorDeclaration cd, Void arg)
+		
+		{
+			super.visit(cd,arg);
+			
+			constructorModifierList.add(cd.getModifiers());
+		//	System.out.print(JavaFileParser.constructorModifierList);
+				
+			constructorNameList.add(cd.getName());
+			//System.out.print(" "+JavaFileParser.constructorNameList);
+			
+			if(cd.getParameters()!=null)
+			{
+			constructorParameterList.add(cd.getParameters().toString());
+			//System.out.print(" "+JavaFileParser.constructorParameterList);
+			}
+			
+			//System.out.print(" "+JavaFileParser.constructorParameterList);
+		}
+	}
