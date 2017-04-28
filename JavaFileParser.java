@@ -249,31 +249,6 @@ public class JavaFileParser
 		}
 	}
 	
-	//gather constructor data
-	
-	public static class ConstructorCollector extends VoidVisitorAdapter<Void>
-	{
-		@Override
-		public void visit(ConstructorDeclaration cd, Void arg)
-		
-		{
-			super.visit(cd,arg);
-			
-			constructorModifierList.add(cd.getModifiers());
-		//	System.out.print(JavaFileParser.constructorModifierList);
-				
-			constructorNameList.add(cd.getName());
-			//System.out.print(" "+JavaFileParser.constructorNameList);
-			
-			if(cd.getParameters()!=null)
-			{
-			constructorParameterList.add(cd.getParameters().toString());
-			//System.out.print(" "+JavaFileParser.constructorParameterList);
-			}
-			
-			//System.out.print(" "+JavaFileParser.constructorParameterList);
-		}
-	}
 	
 	//to check for variable declaration inside methods
 	
