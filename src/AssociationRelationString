@@ -1,0 +1,177 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+public class AssociationRelationString 
+
+{
+	static List<HashMap<String,String>> associationList = new ArrayList<>();
+	static List<HashMap<String,String>> drawAssociationList = new ArrayList<>();
+	static String associationClass;
+	static boolean isAssociation;
+	static boolean isMultiplicity = false;
+	static List<String> associationFields = new ArrayList<>();
+	static StringBuilder drawAssociationString = new StringBuilder();
+	
+	public static void associationDependency(String fieldName)
+	{
+		String fieldType= JavaFileParser.fieldTypeList.get(JavaFileParser.fieldNameList.indexOf(fieldName));
+//		System.out.println("Inside assodep -- fieldType --"+ fieldType);
+			if(fieldType.contains("["))
+			{
+				//isMultiplicity = true;
+				associationClass = fieldType.substring(0,fieldType.indexOf("["));
+				isAssociation=checkForAssociation(associationClass);
+//				System.out.println("printing '[' isassociation = "+isAssociation);
+//				System.out.println("printing '[' assclass = "+associationClass);
+				if(isAssociation)
+				{
+					isMultiplicity = true;
+				handleAssociationClass(associationClass, fieldName);
+				}
+			}
+			
+			else if (fieldType.contains("Collection") || fieldType.contains("List") ||fieldType.contains("Map") || fieldType.contains("Set"))
+			{
+			//	isMultiplicity = true;
+				associationClass=fieldType.substring(fieldType.indexOf("<")+1,fieldType.indexOf(">"));
+				isAssociation=checkForAssociation(associationClass);
+//				System.out.println("printing '<' isassociation = "+isAssociation);
+//				System.out.println("printing '<' assclass = "+associationClass);
+				if(isAssociation)
+				{
+					isMultiplicity = true;
+				handleAssociationClass(associationClass,fieldName);
+				
+				}
+				
+			}
+			
+			else
+			{
+			//	isMultiplicity = false;
+				associationClass=fieldType;
+				isAssociation=checkForAssociation(fieldType);
+//				System.out.println("printing plain isassociation = "+isAssociation);
+//				System.out.println("printing plain assclass = "+associationClass);
+				if(isAssociation)
+				{
+					isMultiplicity = false;
+				handleAssociationClass(fieldType,fieldName);
+				}
+			}
+			
+	}
+	
+	public static boolean checkForAssociation(String type)
+	{
+//		System.out.println("Inside check for asso");
+//		System.out.println("class names --- " + FileRead.classNameData );
+//		System.out.println("interface names ---- " + FileRead.interfaceNameData );
+//		
+		if(FileRead.classNameData.contains(type) || FileRead.interfaceNameData.contains(type) )
+		{
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public static void handleAssociationClass(String type, String fieldName)
+	{
+		 HashMap<String,String> associatioHashMap = new HashMap<>();
+//		System.out.println("Inside handle asso -- associationClass --" + associationClass);
+		associatioHashMap.put("End Name", associationClass);
+	
+		associatioHashMap.put("Start Name", JavaFileParser.classNameList.get(0));
+		
+		if(isMultiplicity)
+			associatioHashMap.put("Multiplicity","\"*\"");
+		else
+			associatioHashMap.put("Multiplicity", "\"1\"");
+
+		associationList.add(associatioHashMap);
+		String name = fieldName.substring(1, fieldName.length()-1);
+		associationFields.add(name);
+		
+//		System.out.println("AssList from handle -- "+associationList);
+//		System.out.println("after removing 0 from start "+associationList);
+//		System.out.println("after size "+associationList.size());
+		
+	}
+	
+	public static void drawAssociation()
+	{
+		String fromClass,toClass;
+		drawAssociationList=associationList;
+
+		while(!drawAssociationList.isEmpty())
+		{
+		
+			int i=0;
+			fromClass=drawAssociationList.get(0).get("Start Name");
+			toClass=drawAssociationList.get(0).get("End Name");		
+//			System.out.println("fromClas --  "+fromClass);
+//			System.out.println("toClass --  "+toClass);
+//			System.out.println("size of AL "+associationList.size());
+//			System.out.println("size of dAl "+drawAssociationList.size());
+			for(;i<drawAssociationList.size();i++)
+			{
+				
+				if(drawAssociationList.get(i).get("Start Name").equals(toClass) && drawAssociationList.get(i).get("End Name").equals(fromClass))
+				{
+//					System.out.println("i =  "+ i);
+//					System.out.println("Startname at i equal to to class "+drawAssociationList.get(i).get("Start Name"));
+//					System.out.println("Endname at i equal to from class "+drawAssociationList.get(i).get("End Name"));
+					
+					break;
+				}
+			}
+			
+			if(i<drawAssociationList.size())
+			{
+				
+				drawAssociationString.append(fromClass)
+				.append(" "+drawAssociationList.get(i).get("Multiplicity"))
+				.append(" -- ")
+				.append(drawAssociationList.get(0).get("Multiplicity"))
+				.append(" "+toClass)
+				.append("\n");
+				
+//				System.out.println("i now = "+i);
+//				System.out.println("Multiplicity at i "+ drawAssociationList.get(i).get("Multiplicity"));
+//				System.out.println("Multiplicity at 0 "+ drawAssociationList.get(0).get("Multiplicity"));
+				
+				drawAssociationList.remove(i);
+				drawAssociationList.remove(0);
+				
+			//	System.out.println("DAL after removing -- "+drawAssociationList);
+								
+			}
+			
+			else
+			{
+				drawAssociationString.append(fromClass)
+				.append(" -- ")
+				.append(drawAssociationList.get(0).get("Multiplicity"))
+				.append(" "+toClass)
+				.append("\n");
+				
+				drawAssociationList.remove(0);
+			}
+		 
+			
+		}
+		
+		if(!drawAssociationString.toString().equals(""))
+		{
+			UMLClassStringMaker.umlInputString.append(drawAssociationString);
+		//	System.out.println("input String again "+UMLClassStringMaker.umlInputString);
+		}
+		//System.out.println("Ass String -- " + drawAssociationString);
+	}
+
+	
+}
+	
+	
