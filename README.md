@@ -21,3 +21,5 @@ This project is to convert a input java code into UML class diagram using the fo
 1. http://javaparser.org/
 2. http://plantuml.com/
 3. https://google.github.io/guava/releases/snapshot/api/docs/com/google/common/collect/Multimap.html
+4. http://www.graphviz.org/
+5. http://www.eclipse.org/downloads/eclipse-packages/
