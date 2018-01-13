@@ -1,4 +1,4 @@
-# CMPE202-uml-parser
+# UML Parser
 
 This project is to convert a input java code into UML class diagram using the following libraries and tools. 
 
